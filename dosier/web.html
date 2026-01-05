@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Создание Досье - Rootgo</title>
+    <link rel="stylesheet" href="/dosier/web.css">
+</head>
+<body>
+    <div id="dot-container"></div>
+
+    <div class="back-button" onclick="location.href='/'">
+        <span class="icon icon-back"></span> На главную
+    </div>
+
+    <div class="left-panel">
+        <div class="panel-header">
+            <span class="icon icon-logo"></span>
+            <h3>Логотипы инструментов</h3>
+            <span class="logo-count">200</span>
+        </div>
+        <div class="logos-grid" id="logos-container"></div>
+    </div>
+
+    <div class="right-panel">
+        <div class="panel-header">
+            <span class="icon icon-documents"></span>
+            <h3>Примеры документов</h3>
+            <span class="doc-count">50</span>
+        </div>
+        <div class="documents-list" id="documents-container"></div>
+    </div>
+
+    <div class="sandbox-area" id="sandbox"></div>
+
+    <div class="controls">
+        <button class="control-btn" onclick="clearSandbox()">
+            <span class="icon icon-clear"></span> Очистить
+        </button>
+        <button class="control-btn" onclick="saveDossier()">
+            <span class="icon icon-save"></span> Сохранить
+        </button>
+        <button class="control-btn" onclick="exportDossier()">
+            <span class="icon icon-export"></span> Экспорт
+        </button>
+    </div>
+
+    <div class="logo-context-menu" id="logoContextMenu">
+        <button onclick="changeLogoSize(1.2)">Увеличить</button>
+        <button onclick="changeLogoSize(0.8)">Уменьшить</button>
+        <button onclick="rotateLogo(15)">Повернуть вправо</button>
+        <button onclick="rotateLogo(-15)">Повернуть влево</button>
+        <hr style="border-color: #444; margin: 5px 0;">
+        <button onclick="deleteLogo()" style="color: #ff5555;">Удалить</button>
+    </div>
+
+    <div class="bg-logo-count" id="bgLogoCount">
+        Лого на фоне: <span id="logoCount">0</span>
+    </div>
+    <script src="/dosier/web.js"></script>
+</body>
+</html>
