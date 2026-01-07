@@ -37,7 +37,6 @@ def dosier_css():
 def dosier_js():
     return send_file('dosier/web.js')
 
-# ДОБАВЬТЕ ЭТИ МАРШРУТЫ:
 @app.route('/dosier/logo/<path:filename>')
 def dosier_logo(filename):
     logo_dir = os.path.join(os.path.dirname(__file__), 'dosier', 'logo')
@@ -47,6 +46,18 @@ def dosier_logo(filename):
 def logo(filename):
     logo_dir = os.path.join(os.path.dirname(__file__), 'logo')
     return send_from_directory(logo_dir, filename)
+
+@app.route('/osint')
+def osint():
+    return "OSINT tools page (в разработке)"
+
+@app.route('/pentest')
+def pentest():
+    return "Pentest tools page (в разработке)"
+
+@app.route('/serenity')
+def serenity():
+    return "Serenity AI page (в разработке)"
 
 @app.route('/api/save-dossier', methods=['POST'])
 def save_dossier():
