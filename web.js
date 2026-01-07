@@ -1,4 +1,4 @@
-﻿class DotBackground {
+class DotBackground {
     constructor() {
         this.container = document.getElementById('dot-container');
         this.dots = [];
@@ -85,12 +85,14 @@
 
         const osintTools = this.createToolField('osint_tools', '🔍 OSINT Tools');
         const pentestTools = this.createToolField('pentest_tools', '⚡ Pentest Tools');
+        const serenityAI = this.createSerenityAIButton();
         const constructorBtn = this.createConstructorButton();
         const telegramBlock = this.createLinkField('telegram_link', 'Telegram', 't.me/root_sql', this.createTelegramLinkIcon());
         const channelBlock = this.createLinkField('channel_link', 'Channel', 'https://t.me/+6VyEXR4L7eRjN2Q1', this.createChannelLinkIcon());
 
         linksContainer.appendChild(osintTools);
         linksContainer.appendChild(pentestTools);
+        linksContainer.appendChild(serenityAI);
         linksContainer.appendChild(constructorBtn);
         linksContainer.appendChild(telegramBlock);
         linksContainer.appendChild(channelBlock);
@@ -148,7 +150,7 @@
         fieldContainer.appendChild(fieldContent);
 
         fieldContainer.addEventListener('click', () => {
-            const url = id === 'osint_tools' ? '/osint' : '/pentest';
+            const url = id === 'osint_tools' ? 'osint' : 'pentest';
             window.location.href = url;
         });
 
@@ -163,6 +165,78 @@
         });
 
         return fieldContainer;
+    }
+
+    createSerenityAIButton() {
+        const fieldContainer = document.createElement('div');
+        fieldContainer.className = 'field-container serenity-btn';
+        fieldContainer.style.cssText = `
+            position: relative;
+            min-width: 200px;
+            background: linear-gradient(135deg, rgba(156, 39, 176, 0.2), rgba(233, 30, 99, 0.2));
+            border: 2px solid #9c27b0;
+            border-radius: 10px;
+            padding: 15px;
+            z-index: 50;
+            box-shadow: 0 4px 20px rgba(156, 39, 176, 0.3);
+            backdrop-filter: blur(5px);
+            cursor: pointer;
+            transform-origin: center;
+            transition: all 0.3s ease;
+        `;
+
+        const fieldHeader = document.createElement('div');
+        fieldHeader.className = 'field-header';
+
+        const fieldIcon = document.createElement('div');
+        fieldIcon.className = 'field-icon';
+        fieldIcon.innerHTML = this.createAIicon();
+
+        const fieldLabel = document.createElement('div');
+        fieldLabel.className = 'field-label';
+        fieldLabel.textContent = '🤖 Serenity AI';
+        fieldLabel.style.cssText = `
+            color: #9c27b0;
+            font-weight: bold;
+            font-size: 14px;
+        `;
+
+        fieldHeader.appendChild(fieldIcon);
+        fieldHeader.appendChild(fieldLabel);
+        fieldContainer.appendChild(fieldHeader);
+
+        const fieldContent = document.createElement('div');
+        fieldContent.className = 'field-content';
+        fieldContent.textContent = 'Искусственный интеллект для анализа данных';
+        fieldContent.style.cssText = `
+            color: #fff;
+            margin-top: 10px;
+            font-size: 13px;
+        `;
+        fieldContainer.appendChild(fieldContent);
+
+        fieldContainer.addEventListener('click', () => {
+            window.location.href = 'serenity';
+        });
+
+        fieldContainer.addEventListener('mouseenter', () => {
+            fieldContainer.style.transform = 'translateY(-2px)';
+            fieldContainer.style.boxShadow = '0 6px 25px rgba(156, 39, 176, 0.4)';
+        });
+
+        fieldContainer.addEventListener('mouseleave', () => {
+            fieldContainer.style.transform = 'translateY(0)';
+            fieldContainer.style.boxShadow = '0 4px 20px rgba(156, 39, 176, 0.3)';
+        });
+
+        return fieldContainer;
+    }
+
+    createAIicon() {
+        return `<svg class="icon-svg" viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z" fill="#ccc"/>
+            <path d="M16.59 7.58L10 14.17l-2.59-2.58L6 13l4 4 8-8z" fill="#9c27b0"/>
+        </svg>`;
     }
 
     createToolsIcon() {
@@ -331,7 +405,7 @@
         fieldContainer.appendChild(fieldContent);
 
         fieldContainer.addEventListener('click', () => {
-            window.location.href = '/dosier';
+            window.location.href = 'dosier';
         });
 
         fieldContainer.addEventListener('mouseenter', () => {
@@ -516,34 +590,6 @@
                 e.preventDefault();
             }
         });
-
-        this.container.addEventListener('wheel', (e) => {
-            e.preventDefault();
-
-            const delta = e.deltaY > 0 ? 0.9 : 1.1;
-            const minScale = 0.3;
-            const maxScale = 3;
-
-            const newScale = Math.max(minScale, Math.min(maxScale, this.dotContainerScale * delta));
-
-            if (newScale !== this.dotContainerScale) {
-                const rect = this.container.getBoundingClientRect();
-                const mouseX = e.clientX - rect.left;
-                const mouseY = e.clientY - rect.top;
-
-                const scaleChange = newScale / this.dotContainerScale;
-                const newLeft = this.containerLeft - (mouseX * (scaleChange - 1));
-                const newTop = this.containerTop - (mouseY * (scaleChange - 1));
-
-                this.dotContainerScale = newScale;
-                this.containerLeft = newLeft;
-                this.containerTop = newTop;
-
-                this.container.style.transform = `translate(${newLeft}px, ${newTop}px) scale(${this.dotContainerScale})`;
-                this.updateConnections();
-                this.updateScaleIndicator();
-            }
-        }, { passive: false });
     }
 
     enableEditing() {
@@ -791,7 +837,7 @@
     createChildIcon() { return `<svg class="icon-svg" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2" fill="#ccc"/><path d="M12 9c-2.21 0-4 1.79-4 4v7h2v-7c0-1.1.9-2 2-2s2 .9 2 2v7h2v-7c0-2.21-1.79-4-4-4z" fill="#ccc"/></svg>`; }
     createPassportIcon() { return `<svg class="icon-svg" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2" fill="none" stroke="#ccc" stroke-width="2"/><path d="M8 8h8M8 12h8M8 16h5" stroke="#ccc" stroke-width="1"/></svg>`; }
     createDocumentIcon() { return `<svg class="icon-svg" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z" fill="#ccc"/></svg>`; }
-    createBuildingIcon() { return `<svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-4v2h4v-2zm0 4h-4v2h4v-2z" fill="#ccc"/></svg>`; }
+    createBuildingIcon() { return `<svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-4v2h4v-2zm0 4h-4v2h4v-2z" fill="#ccc"/></svg>`; }
     createCarIcon() { return `<svg class="icon-svg" viewBox="0 0 24 24"><path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z" fill="#ccc"/></svg>`; }
     createGlobePassportIcon() { return `<svg class="icon-svg" viewBox="0 0 24 24"><path d="M17 3h-3v2h3v2.65l-4 2.5V12h-2v-1.85L7 7.65V5h3V3H7c-1.1 0-2 .9-2 2v2.65c0 .53.21 1.04.59 1.42L9 13.15V15c0 1.1.9 2 2 2h2c1.1 0 2-.9 2-2v-1.85l3.41-2.08c.38-.38.59-.89.59-1.42V5c0-1.1-.9-2-2-2z" fill="#ccc"/></svg>`; }
     createHelmetIcon() { return `<svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z" fill="#ccc"/></svg>`; }
@@ -826,7 +872,7 @@
     createSearchIcon() { return `<svg class="icon-svg" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" fill="#ccc"/></svg>`; }
     createRouterIcon() { return `<svg class="icon-svg" viewBox="0 0 24 24"><path d="M20.2 5.9l-1.4-1.4c-.3-.3-.8-.3-1.1 0l-1.4 1.4c-.3.3-.3.8 0 1.1l1.4 1.4c.3.3.8.3 1.1 0l1.4-1.4c.3-.3.3-.8 0-1.1zM19 10h2V8h-2v2zm-7 12c-3.31 0-6-2.69-6-6 0-1.66.7-3.16 1.82-4.24l-1.82-1.82 3.54-3.54 1.82 1.82C12.84 6.7 14.34 6 16 6c3.31 0 6 2.69 6 6s-2.69 6-6 6zM8 13c0 1.1.9 2 2 2s2-.9 2-2-.9-2-2-2-2 .9-2 2z" fill="#ccc"/></svg>`; }
     createWifiIcon() { return `<svg class="icon-svg" viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z" fill="#ccc"/></svg>`; }
-    createDomainIcon() { return `<svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="#ccc"/></svg>`; }
+    createDomainIcon() { return `<svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" fill="#ccc"/></svg>`; }
     createServerIcon() { return `<svg class="icon-svg" viewBox="0 0 24 24"><path d="M20 6H4c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 10H4v-8h16v8zM8 13h8v2H8z" fill="#ccc"/></svg>`; }
     createShieldIcon() { return `<svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z" fill="#ccc"/></svg>`; }
     createCityIcon() { return `<svg class="icon-svg" viewBox="0 0 24 24"><path d="M15 11V5l-3-3-3 3v2H3v14h18V11h-6zm-8 8H5v-2h2v2zm0-4H5v-2h2v2zm0-4H5V9h2v2zm0-4H5V5h2v2zm4 12H9v-2h2v2zm0-4H9v-2h2v2zm0-4H9V9h2v2zm0-4H9V5h2v2zm6 12h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V9h2v2zm0-4h-2V5h2v2z" fill="#ccc"/></svg>`; }
